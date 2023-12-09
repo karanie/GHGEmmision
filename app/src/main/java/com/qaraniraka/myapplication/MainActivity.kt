@@ -25,7 +25,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.qaraniraka.myapplication.ui.MainScreen
 import com.qaraniraka.myapplication.ui.Routes
-import com.qaraniraka.myapplication.ui.WelcomeScreen
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
 
 class MainActivity : ComponentActivity() {

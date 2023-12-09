@@ -4,19 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -25,6 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.qaraniraka.myapplication.ui.MainScreen
+import com.qaraniraka.myapplication.ui.Routes
+import com.qaraniraka.myapplication.ui.WelcomeScreen
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
 
 class MainActivity : ComponentActivity() {
@@ -76,53 +77,16 @@ fun GHGEmmssionApp() {
             bottomBar = { GHGEmmissionBottomAppBar() },
             modifier = Modifier.fillMaxSize()
         ) { paddingValues ->
-            Surface(modifier = Modifier.padding(paddingValues)) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = "Rekam Aktivitas",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        ElevatedCard(
-                            onClick = { /* TODO */ },
-                            modifier = Modifier
-                                .height(120.dp)
-                                .width(160.dp)
-                        ) {
-                            Column(
-                                verticalArrangement = Arrangement.Bottom, modifier = Modifier
-                                    .padding(16.dp)
-                                    .fillMaxSize()
-                            ) {
-                                Text(text = "Aktivitas Makan")
-                            }
-                        }
-                        ElevatedCard(
-                            onClick = { /* TODO */ },
-                            modifier = Modifier
-                                .height(120.dp)
-                                .width(160.dp)
-                        ) {
-                            Column(
-                                verticalArrangement = Arrangement.Bottom, modifier = Modifier
-                                    .padding(16.dp)
-                                    .fillMaxSize()
-                            ) {
-                                Text(text = "Aktivitas Berkendara")
-                            }
-                        }
-                    }
+            NavHost(
+                navController = rememberNavController(),
+                startDestination = Routes.MainScreen.name,
+                modifier = Modifier.padding(paddingValues)
+            ) {
+                composable(route = Routes.MainScreen.name) {
+                    MainScreen()
                 }
             }
+
         }
     }
 }

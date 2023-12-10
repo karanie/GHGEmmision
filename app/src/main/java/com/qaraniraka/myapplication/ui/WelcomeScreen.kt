@@ -83,7 +83,7 @@ fun MyButton(text: String, icon: Painter, onClick: () -> Unit, modifier: Modifie
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Icon(
@@ -115,7 +115,7 @@ fun MyOutlinedButton(
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Icon(

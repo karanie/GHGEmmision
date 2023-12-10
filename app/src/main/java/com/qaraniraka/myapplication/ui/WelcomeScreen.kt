@@ -23,10 +23,11 @@ import androidx.compose.ui.unit.dp
 import com.qaraniraka.myapplication.R
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
 
-
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    onRegisterButtonClicked: () -> Unit,
+    onLoginButtonClicked: () -> Unit
+) {
     Surface {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -41,15 +42,18 @@ fun WelcomeScreen() {
             )
             Column(
                 verticalArrangement = Arrangement.spacedBy(
-                    16.dp, alignment = Alignment.CenterVertically)
+                    16.dp, alignment = Alignment.CenterVertically
+                )
             ) {
                 MyButton(
                     text = "Register",
                     icon = painterResource(id = R.drawable.outline_edit_24),
+                    onClick = onRegisterButtonClicked
                 )
                 MyOutlinedButton(
                     text = "Login",
                     icon = painterResource(id = R.drawable.login_24),
+                    onClick = onLoginButtonClicked
                 )
             }
             Text(
@@ -67,9 +71,9 @@ fun WelcomeScreen() {
  * Commons components
  */
 @Composable
-fun MyButton(text: String, icon: Painter, modifier: Modifier = Modifier) {
+fun MyButton(text: String, icon: Painter, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = modifier
             .width(180.dp)
             .height(56.dp)
@@ -94,9 +98,14 @@ fun MyButton(text: String, icon: Painter, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MyOutlinedButton(text: String, icon: Painter, modifier: Modifier = Modifier) {
+fun MyOutlinedButton(
+    text: String,
+    icon: Painter,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     OutlinedButton(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = modifier
             .width(180.dp)
             .height(56.dp)
@@ -118,4 +127,14 @@ fun MyOutlinedButton(text: String, icon: Painter, modifier: Modifier = Modifier)
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun WelcomeScreenPreview(
+) {
+    WelcomeScreen(
+        onRegisterButtonClicked = {},
+        onLoginButtonClicked = {}
+    )
 }

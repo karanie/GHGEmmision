@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun MakanScreen() {
+fun BerkendaraScreen() {
     var jenisBensinExpanded by remember { mutableStateOf(false) }
     var jenisBensinSelected by remember { mutableStateOf("") }
     val jenisBensin = arrayOf(

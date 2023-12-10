@@ -2,7 +2,7 @@ package com.qaraniraka.myapplication.data
 
 import kotlinx.coroutines.flow.Flow
 
-class OfflineUserRepository(private val userDao: UserDao) : UserRepository {
+class OfflineUsersRepository(private val userDao: UserDao) : UsersRepository {
     override fun getUserByUserId(id: Int): Flow<List<User>> = userDao.getUserByUserId(id)
 
     override fun getUserByEmail(email: String): Flow<List<User>> = userDao.getUserByEmail(email)

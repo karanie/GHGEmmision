@@ -2,7 +2,7 @@ package com.qaraniraka.myapplication.data
 
 import kotlinx.coroutines.flow.Flow
 
-interface UserRepository {
+interface UsersRepository {
     fun getUserByUserId(id: Int): Flow<List<User>>
     fun getUserByEmail(email: String): Flow<List<User>>
     fun getUserByEmailAndPassword(email: String, password: String): Flow<List<User>>

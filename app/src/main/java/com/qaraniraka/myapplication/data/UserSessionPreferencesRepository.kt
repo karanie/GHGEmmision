@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class LoggedInUserPreferencesRepository(
+class UserSessionPreferencesRepository(
     private val dataStore: DataStore<Preferences>
 ) {
     private companion object {

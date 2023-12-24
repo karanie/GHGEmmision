@@ -20,7 +20,7 @@ class UserSessionPreferencesRepository(
 
     suspend fun saveUserSession(userSession: String) {
         dataStore.edit { preferences ->
-            preferences[USER_SESSION]
+            preferences[USER_SESSION] = userSession
         }
     }
 }

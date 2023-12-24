@@ -1,5 +1,6 @@
 package com.qaraniraka.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,17 +16,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.qaraniraka.myapplication.ui.MainScreen
 import com.qaraniraka.myapplication.ui.Routes
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
+import com.qaraniraka.myapplication.viewmodel.UserSessionViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +49,14 @@ fun GHGEmmissionTopAppBar() {
 
 @Composable
 fun GHGEmmissionBottomAppBar() {
+    val userSessionViewModel: UserSessionViewModel = viewModel(factory = UserSessionViewModel.Factory)
+    if (userSessionViewModel.uiState.collectAsState().value.userSession == "") {
+        val context = LocalContext.current
+        val intent = Intent(context, WelcomeActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+    }
+
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,

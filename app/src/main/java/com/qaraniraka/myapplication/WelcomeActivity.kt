@@ -1,9 +1,11 @@
 package com.qaraniraka.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,10 +16,25 @@ import com.qaraniraka.myapplication.ui.RegisterScreen
 import com.qaraniraka.myapplication.ui.Routes
 import com.qaraniraka.myapplication.ui.WelcomeScreen
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class WelcomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val userSessionPreferencesRepository = (application as GHGEmApplication).userSessionPreferencesRepository
+        val currentUserSession : String
+        runBlocking(Dispatchers.IO) {
+            currentUserSession = userSessionPreferencesRepository.userSession.first()
+        }
+        if (currentUserSession != "") {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            this.startActivity(intent)
+        }
+
         setContent {
             WelcomeActivityApp()
         }
@@ -28,6 +45,8 @@ class WelcomeActivity : ComponentActivity() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun WelcomeActivityApp(navController: NavHostController = rememberNavController()) {
+    val context = LocalContext.current
+
     GHGEmissionTheme {
         NavHost(
             navController = navController, startDestination = Routes.WelcomeScreen.name
@@ -39,7 +58,12 @@ fun WelcomeActivityApp(navController: NavHostController = rememberNavController(
                 )
             }
             composable(route = Routes.LoginScreen.name) {
-                LoginScreen()
+                LoginScreen(onLoginButtonClick = {
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.putExtra("user_session", "foobar")
+                    context.startActivity(intent)
+                })
             }
             composable(route = Routes.RegisterScreen.name) {
                 RegisterScreen()

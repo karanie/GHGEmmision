@@ -9,15 +9,21 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.qaraniraka.myapplication.GHGEmApplication
 import com.qaraniraka.myapplication.data.UserSessionPreferencesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class UserSessionViewModel(private val userSessionPreferencesRepository: UserSessionPreferencesRepository) :
     ViewModel() {
-
-    private val _uiState = MutableStateFlow(UserSessionUiState())
-    val uiState: StateFlow<UserSessionUiState> = _uiState
-
+    val uiState: StateFlow<UserSessionUiState> = userSessionPreferencesRepository.userSession.map {
+        UserSessionUiState(it)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = UserSessionUiState()
+    )
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

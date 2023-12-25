@@ -16,25 +16,46 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.qaraniraka.myapplication.ui.MainScreen
 import com.qaraniraka.myapplication.ui.Routes
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
-import com.qaraniraka.myapplication.viewmodel.UserSessionViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var userSession : String? = intent.getStringExtra("user_session")
+        val userSessionPreferencesRepository = (application as GHGEmApplication).userSessionPreferencesRepository
+
+        // Might cause problem if this the Flow takes too long. But this should be sufficient
+        // for this specific case.
+        var currentUserSession : String
+        runBlocking(Dispatchers.IO) {
+            currentUserSession = userSessionPreferencesRepository.userSession.first()
+        }
+        if (!userSession.isNullOrEmpty()) {
+            runBlocking(Dispatchers.IO) {
+                userSessionPreferencesRepository.saveUserSession(userSession)
+            }
+        }
+        runBlocking(Dispatchers.IO) {
+            currentUserSession = userSessionPreferencesRepository.userSession.first()
+        }
+        if (currentUserSession == "") {
+            val intent = Intent(this, WelcomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            this.startActivity(intent)
+        }
+
         setContent {
             GHGEmmssionApp()
         }
@@ -49,14 +70,6 @@ fun GHGEmmissionTopAppBar() {
 
 @Composable
 fun GHGEmmissionBottomAppBar() {
-    val userSessionViewModel: UserSessionViewModel = viewModel(factory = UserSessionViewModel.Factory)
-    if (userSessionViewModel.uiState.collectAsState().value.userSession == "") {
-        val context = LocalContext.current
-        val intent = Intent(context, WelcomeActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
-    }
-
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
@@ -80,7 +93,6 @@ fun GHGEmmissionBottomAppBar() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GHGEmmssionApp() {
     GHGEmissionTheme {
@@ -98,7 +110,6 @@ fun GHGEmmssionApp() {
                     MainScreen()
                 }
             }
-
         }
     }
 }

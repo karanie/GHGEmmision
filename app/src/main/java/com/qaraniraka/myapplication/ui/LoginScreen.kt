@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -20,7 +19,9 @@ import androidx.compose.ui.unit.dp
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onLoginButtonClick: () -> Unit = {}
+) {
     Surface {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,7 +54,7 @@ fun LoginScreen() {
                 )
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = onLoginButtonClick,
                 modifier = Modifier
                     .width(120.dp)
                     .padding(top = 16.dp)

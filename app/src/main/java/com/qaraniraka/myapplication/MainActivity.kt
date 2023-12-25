@@ -48,7 +48,7 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var userSession: String? = intent.getStringExtra("user_session")
+        val userSession: String? = intent.getStringExtra("user_session")
         val userSessionPreferencesRepository =
             (application as GHGEmApplication).userSessionPreferencesRepository
 

@@ -39,11 +39,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.qaraniraka.myapplication.ui.MainScreen
+import com.qaraniraka.myapplication.ui.ProfileScreen
 import com.qaraniraka.myapplication.ui.Routes
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.util.Calendar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,8 +116,8 @@ fun NavButton(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GHGEmmissionTopAppBar() {
-    TopAppBar(title = { Text(text = "GHG Emmission") })
+fun GHGEmmissionTopAppBar(title: String = "GHG Emission") {
+    TopAppBar(title = { Text(text = title) })
 }
 
 @Composable
@@ -155,10 +157,19 @@ fun GHGEmmissionBottomAppBar(
 @Composable
 fun GHGEmmssionApp(navController: NavHostController = rememberNavController()) {
     var currentRoute by remember { mutableStateOf(Routes.MainScreen.name) }
-
+    val timeOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    val greeting = if (timeOfDay in 0..12) "Selamat Pagi"
+        else if (timeOfDay in 13..18) "Selamat Sore"
+        else "Selamat Malam"
     GHGEmissionTheme {
         Scaffold(
-            topBar = { GHGEmmissionTopAppBar() },
+            topBar = {
+                GHGEmmissionTopAppBar(
+                    if (currentRoute == Routes.ProfileScreen.name)
+                    greeting
+                    else "GHG Emission"
+                )
+            },
             bottomBar = {
                 GHGEmmissionBottomAppBar(
                     currentRoute = currentRoute,
@@ -190,7 +201,7 @@ fun GHGEmmssionApp(navController: NavHostController = rememberNavController()) {
 
                 }
                 composable(route = Routes.ProfileScreen.name) {
-
+                    ProfileScreen()
                 }
             }
         }

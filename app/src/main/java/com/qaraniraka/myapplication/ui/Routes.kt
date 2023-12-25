@@ -5,6 +5,8 @@ enum class Routes(name: String) {
     LoginScreen(name = "LoginScreen"),
     RegisterScreen(name = "RegisterScreen"),
     MainScreen(name = "MainScreen"),
+    StatScreen(name = "StatScreen"),
+    ProfileScreen(name = "ProfileScreen"),
     MakanScreen(name = "MakanScreen"),
     BerkendaraScreen(name = "BerkendaraScreen")
 }

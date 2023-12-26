@@ -53,7 +53,6 @@ import java.util.Calendar
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val userSession: String? = intent.getStringExtra("user_session")
         val userSessionPreferencesRepository =
             (application as GHGEmApplication).userSessionPreferencesRepository
 
@@ -62,11 +61,6 @@ class MainActivity : ComponentActivity() {
         var currentUserSession: String
         runBlocking(Dispatchers.IO) {
             currentUserSession = userSessionPreferencesRepository.userSession.first()
-        }
-        if (!userSession.isNullOrEmpty()) {
-            runBlocking(Dispatchers.IO) {
-                userSessionPreferencesRepository.saveUserSession(userSession)
-            }
         }
         runBlocking(Dispatchers.IO) {
             currentUserSession = userSessionPreferencesRepository.userSession.first()

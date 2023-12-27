@@ -15,6 +15,10 @@ data class UserLoginPostData(
     val password: String,
 )
 
+data class UserLogoutPostData(
+    val session: String,
+)
+
 data class UserCheckEmailData(
     val email: String?
 )

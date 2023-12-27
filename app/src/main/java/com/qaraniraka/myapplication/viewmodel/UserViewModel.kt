@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.qaraniraka.myapplication.model.PostSuccess
 import com.qaraniraka.myapplication.model.UserCheckEmailData
 import com.qaraniraka.myapplication.model.UserLoginPostData
+import com.qaraniraka.myapplication.model.UserLogoutPostData
 import com.qaraniraka.myapplication.model.UserRegistrationPostData
 import com.qaraniraka.myapplication.model.VerifySuccess
 import com.qaraniraka.myapplication.network.GHGEmBackendApi
@@ -78,12 +79,31 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    fun logoutUser(userLogoutPostData: UserLogoutPostData) {
+        viewModelScope.launch {
+            userUiState = UserUiState.Loading
+            userUiState = try {
+                GHGEmBackendApi.service.logoutUser(
+                    userLogoutPostData
+                )
+                UserUiState.LogoutSuccess
+            } catch (e: IOException) {
+                UserUiState.Error
+            } catch (e: HttpException) {
+                UserUiState.Error
+            } catch (e: Throwable) {
+                UserUiState.Error
+            }
+        }
+    }
 }
 
 sealed interface UserUiState {
     data class RegisterSuccess(val data: PostSuccess) : UserUiState
     data class LoginSuccess(val data: VerifySuccess) : UserUiState
     data class EmailAvaiable(val data: Boolean) : UserUiState
+    object LogoutSuccess : UserUiState
+
     object Error : UserUiState
     object Loading : UserUiState
     object Idle : UserUiState

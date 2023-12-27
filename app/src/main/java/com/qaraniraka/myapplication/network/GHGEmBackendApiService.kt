@@ -5,6 +5,7 @@ import com.qaraniraka.myapplication.model.FoobarPostData
 import com.qaraniraka.myapplication.model.PostSuccess
 import com.qaraniraka.myapplication.model.UserCheckEmailData
 import com.qaraniraka.myapplication.model.UserLoginPostData
+import com.qaraniraka.myapplication.model.UserLogoutPostData
 import com.qaraniraka.myapplication.model.UserRegistrationPostData
 import com.qaraniraka.myapplication.model.VerifySuccess
 import retrofit2.Retrofit
@@ -37,6 +38,9 @@ interface GHGEmBackendApiService {
 
     @POST("api/user/verify")
     suspend fun loginUser(@Body userLoginPostData: UserLoginPostData): VerifySuccess
+
+    @POST("api/user/logout")
+    suspend fun logoutUser(@Body userLogoutPostData: UserLogoutPostData)
 }
 
 object GHGEmBackendApi {

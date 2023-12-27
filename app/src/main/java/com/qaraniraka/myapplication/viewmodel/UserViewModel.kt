@@ -103,7 +103,6 @@ sealed interface UserUiState {
     data class LoginSuccess(val data: VerifySuccess) : UserUiState
     data class EmailAvaiable(val data: Boolean) : UserUiState
     object LogoutSuccess : UserUiState
-
     object Error : UserUiState
     object Loading : UserUiState
     object Idle : UserUiState

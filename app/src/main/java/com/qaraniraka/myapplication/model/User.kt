@@ -22,3 +22,12 @@ data class UserLogoutPostData(
 data class UserCheckEmailData(
     val email: String?
 )
+
+data class UserData(
+    @SerializedName("id_user")
+    val idUser: Int,
+    val email: String,
+    @SerializedName("full_name")
+    val fullName: String,
+    val birthday: String
+)

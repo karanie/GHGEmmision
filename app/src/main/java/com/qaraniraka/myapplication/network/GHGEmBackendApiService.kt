@@ -4,6 +4,7 @@ import com.qaraniraka.myapplication.model.FoobarList
 import com.qaraniraka.myapplication.model.FoobarPostData
 import com.qaraniraka.myapplication.model.PostSuccess
 import com.qaraniraka.myapplication.model.UserCheckEmailData
+import com.qaraniraka.myapplication.model.UserData
 import com.qaraniraka.myapplication.model.UserLoginPostData
 import com.qaraniraka.myapplication.model.UserLogoutPostData
 import com.qaraniraka.myapplication.model.UserRegistrationPostData
@@ -35,6 +36,9 @@ interface GHGEmBackendApiService {
 
     @GET("api/user/email/{email}")
     suspend fun getUserByEmail(@Path("email") email: String): UserCheckEmailData
+
+    @GET("api/user/session/{session}")
+    suspend fun getUserBySession(@Path("session") session: String): UserData
 
     @POST("api/user/verify")
     suspend fun loginUser(@Body userLoginPostData: UserLoginPostData): VerifySuccess

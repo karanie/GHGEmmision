@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.qaraniraka.myapplication.model.PostSuccess
 import com.qaraniraka.myapplication.model.UserCheckEmailData
+import com.qaraniraka.myapplication.model.UserData
 import com.qaraniraka.myapplication.model.UserLoginPostData
 import com.qaraniraka.myapplication.model.UserLogoutPostData
 import com.qaraniraka.myapplication.model.UserRegistrationPostData
@@ -96,12 +97,34 @@ class UserViewModel : ViewModel() {
             }
         }
     }
+
+    fun getUserDataBySession(session: String) {
+        viewModelScope.launch {
+            userUiState = UserUiState.Loading
+            userUiState = try {
+                UserUiState.UserDataSuccess(
+                    GHGEmBackendApi.service.getUserBySession(session)
+                )
+            } catch (e: IOException) {
+                Log.w("UserViewModel", e)
+                UserUiState.Error
+            } catch (e: HttpException) {
+                Log.w("UserViewModel", e)
+                UserUiState.Error
+            } catch (e: Throwable) {
+                Log.w("UserViewModel", e)
+                UserUiState.Error
+            }
+        }
+
+    }
 }
 
 sealed interface UserUiState {
     data class RegisterSuccess(val data: PostSuccess) : UserUiState
     data class LoginSuccess(val data: VerifySuccess) : UserUiState
     data class EmailAvaiable(val data: Boolean) : UserUiState
+    data class UserDataSuccess(val data: UserData) : UserUiState
     object LogoutSuccess : UserUiState
     object Error : UserUiState
     object Loading : UserUiState

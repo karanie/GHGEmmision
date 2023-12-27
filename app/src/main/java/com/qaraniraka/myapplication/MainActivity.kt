@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,11 +41,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.qaraniraka.myapplication.model.UserLogoutPostData
 import com.qaraniraka.myapplication.ui.MainScreen
 import com.qaraniraka.myapplication.ui.ProfileScreen
 import com.qaraniraka.myapplication.ui.Routes
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
 import com.qaraniraka.myapplication.viewmodel.UserSessionViewModel
+import com.qaraniraka.myapplication.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -158,6 +161,9 @@ fun GHGEmmssionApp(
     ),
     navController: NavHostController = rememberNavController()
 ) {
+    val userViewModelForLogout: UserViewModel = viewModel()
+    val userSession = userSessionViewModel.uiState.collectAsState().value.userSession
+
     val context = LocalContext.current
     var currentRoute by remember { mutableStateOf(Routes.MainScreen.name) }
     val timeOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -206,6 +212,9 @@ fun GHGEmmssionApp(
                 composable(route = Routes.ProfileScreen.name) {
                     ProfileScreen(
                         onLogoutClick = {
+                            userViewModelForLogout.logoutUser(
+                                UserLogoutPostData(userSession)
+                            )
                             userSessionViewModel.clearUserSession()
                             val intent = Intent(context, WelcomeActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)

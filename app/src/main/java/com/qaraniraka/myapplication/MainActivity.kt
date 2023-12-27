@@ -47,6 +47,7 @@ import com.qaraniraka.myapplication.ui.ProfileScreen
 import com.qaraniraka.myapplication.ui.Routes
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
 import com.qaraniraka.myapplication.viewmodel.UserSessionViewModel
+import com.qaraniraka.myapplication.viewmodel.UserUiState
 import com.qaraniraka.myapplication.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -163,19 +164,23 @@ fun GHGEmmssionApp(
 ) {
     val userViewModelForLogout: UserViewModel = viewModel()
     val userSession = userSessionViewModel.uiState.collectAsState().value.userSession
+    val userViewModelForUserData: UserViewModel = viewModel()
 
     val context = LocalContext.current
     var currentRoute by remember { mutableStateOf(Routes.MainScreen.name) }
     val timeOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    val greeting = if (timeOfDay in 0..12) "Selamat Pagi"
-        else if (timeOfDay in 13..18) "Selamat Sore"
-        else "Selamat Malam"
+    val userName = if (userViewModelForUserData.userUiState is UserUiState.UserDataSuccess)
+        (userViewModelForUserData.userUiState as UserUiState.UserDataSuccess).data.fullName
+    else ""
+    val greeting = if (timeOfDay in 0..12) "Selamat Pagi, $userName"
+    else if (timeOfDay in 13..18) "Selamat Sore, $userName"
+    else "Selamat Malam, $userName"
     GHGEmissionTheme {
         Scaffold(
             topBar = {
                 GHGEmmissionTopAppBar(
                     if (currentRoute == Routes.ProfileScreen.name)
-                    greeting
+                        greeting
                     else "GHG Emission"
                 )
             },
@@ -193,6 +198,9 @@ fun GHGEmmssionApp(
                     onProfileIconClicked = {
                         currentRoute = Routes.ProfileScreen.name
                         navController.navigate(Routes.ProfileScreen.name)
+                        if (userSession.isNotEmpty()) {
+                            userViewModelForUserData.getUserDataBySession(userSession)
+                        }
                     }
                 )
             },

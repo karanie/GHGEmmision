@@ -2,6 +2,7 @@ package com.qaraniraka.myapplication.network
 
 import com.qaraniraka.myapplication.model.FoobarList
 import com.qaraniraka.myapplication.model.FoobarPostData
+import com.qaraniraka.myapplication.model.ActivityPostData
 import com.qaraniraka.myapplication.model.PostSuccess
 import com.qaraniraka.myapplication.model.UserCheckEmailData
 import com.qaraniraka.myapplication.model.UserData
@@ -45,6 +46,9 @@ interface GHGEmBackendApiService {
 
     @POST("api/user/logout")
     suspend fun logoutUser(@Body userLogoutPostData: UserLogoutPostData)
+
+    @POST("api/activity")
+    suspend fun postActivity(@Body postActivityData: ActivityPostData): PostSuccess
 }
 
 object GHGEmBackendApi {

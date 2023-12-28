@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreen(
+    modifier: Modifier = Modifier,
     onActivityMakanClick: () -> Unit = {},
-    onActivityBerkendaraClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onActivityBerkendaraClick: () -> Unit = {}
 ) {
     Surface(modifier = modifier) {
         Column(

@@ -21,7 +21,11 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(
+    onActivityMakanClick: () -> Unit = {},
+    onActivityBerkendaraClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
     Surface(modifier = modifier) {
         Column(
             modifier = Modifier
@@ -39,7 +43,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
             ) {
                 ElevatedCard(
-                    onClick = { /* TODO */ },
+                    onClick = onActivityMakanClick,
                     modifier = Modifier
                         .height(120.dp)
                         .width(160.dp)
@@ -53,7 +57,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     }
                 }
                 ElevatedCard(
-                    onClick = { /* TODO */ },
+                    onClick = onActivityBerkendaraClick,
                     modifier = Modifier
                         .height(120.dp)
                         .width(160.dp)

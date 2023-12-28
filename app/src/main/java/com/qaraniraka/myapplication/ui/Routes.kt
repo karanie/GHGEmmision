@@ -8,5 +8,6 @@ enum class Routes(name: String) {
     StatScreen(name = "StatScreen"),
     ProfileScreen(name = "ProfileScreen"),
     MakanScreen(name = "MakanScreen"),
-    BerkendaraScreen(name = "BerkendaraScreen")
+    BerkendaraScreen(name = "BerkendaraScreen"),
+    EmissionResultScreen(name = "ResultScreen")
 }

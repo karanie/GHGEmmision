@@ -212,7 +212,18 @@ fun GHGEmmssionApp(
                 modifier = Modifier.padding(paddingValues)
             ) {
                 composable(route = Routes.MainScreen.name) {
-                    MainScreen()
+                    MainScreen(
+                        onActivityBerkendaraClick = {
+                            val intent = Intent(context, AddActivityActivity::class.java)
+                            intent.putExtra("activity_type", Routes.BerkendaraScreen.name)
+                            context.startActivity(intent)
+                        },
+                        onActivityMakanClick = {
+                            val intent = Intent(context, AddActivityActivity::class.java)
+                            intent.putExtra("activity_type", Routes.MakanScreen.name)
+                            context.startActivity(intent)
+                        }
+                    )
                 }
                 composable(route = Routes.StatScreen.name) {
 

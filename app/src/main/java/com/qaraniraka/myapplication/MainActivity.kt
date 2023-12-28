@@ -236,7 +236,12 @@ fun GHGEmmssionApp(
                     )
                 }
                 composable(route = Routes.StatScreen.name) {
-                    StatScreen()
+                    StatScreen(
+                        onRiwayatAktivitasClick = {
+                            val intent = Intent(context, HistoryActivity::class.java)
+                            context.startActivity(intent)
+                        }
+                    )
                 }
                 composable(route = Routes.ProfileScreen.name) {
                     ProfileScreen(

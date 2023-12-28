@@ -172,8 +172,9 @@ fun GHGEmmssionApp(
     val userName = if (userViewModelForUserData.userUiState is UserUiState.UserDataSuccess)
         (userViewModelForUserData.userUiState as UserUiState.UserDataSuccess).data.fullName
     else ""
-    val greeting = if (timeOfDay in 0..12) "Selamat Pagi, $userName"
-    else if (timeOfDay in 13..18) "Selamat Sore, $userName"
+    val greeting = if (timeOfDay in 0..11) "Selamat Pagi, $userName"
+    else if (timeOfDay in 12..13) "Selamat Siang, $userName"
+    else if (timeOfDay in 14..18) "Selamat Sore, $userName"
     else "Selamat Malam, $userName"
     GHGEmissionTheme {
         Scaffold(

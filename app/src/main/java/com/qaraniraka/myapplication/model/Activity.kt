@@ -3,10 +3,14 @@ package com.qaraniraka.myapplication.model
 import com.google.gson.annotations.SerializedName
 
 data class ActivityBerkendaraDetail(
+    @SerializedName("engine_size")
     val engineSize: Double,
     val cylinders: Int,
+    @SerializedName("fuel_consumption")
     val fuelConsumption: Double,
+    @SerializedName("fuel_type")
     val fuelType: String,
+    @SerializedName("travel_distance")
     val travelDistance: Double
 )
 

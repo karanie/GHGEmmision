@@ -26,7 +26,6 @@ import com.qaraniraka.myapplication.model.ActivityHistoryData
 import com.qaraniraka.myapplication.viewmodel.ActivityUiState
 import com.qaraniraka.myapplication.viewmodel.ActivityViewModel
 import com.qaraniraka.myapplication.viewmodel.UserSessionViewModel
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

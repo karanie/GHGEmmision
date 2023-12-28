@@ -161,7 +161,7 @@ fun BerkendaraScreen(
                                         ukuranEngine ?: 0.0,
                                         jumlahCylinders ?: 0,
                                         fuelConsumption ?: 0.0,
-                                        jenisBensinSelected ?: "",
+                                        jenisBensinSelected,
                                         jarakBerkendara ?: 0.0
                                     )
                                 )

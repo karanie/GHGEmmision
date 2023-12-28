@@ -115,7 +115,7 @@ fun HistoryDetailScreen(historyData: ActivityHistoryData? = null) {
                         Column(
                             horizontalAlignment = Alignment.End
                         ) {
-                            val ctime = LocalDateTime.parse(historyData?.ctime, dateFormatter)
+                            val ctime = LocalDateTime.parse(historyData.ctime, dateFormatter)
                             Text(
                                 text = "${ctime.month.name} ${ctime.dayOfMonth}",
                                 style = MaterialTheme.typography.bodySmall

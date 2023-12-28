@@ -45,6 +45,7 @@ import com.qaraniraka.myapplication.model.UserLogoutPostData
 import com.qaraniraka.myapplication.ui.MainScreen
 import com.qaraniraka.myapplication.ui.ProfileScreen
 import com.qaraniraka.myapplication.ui.Routes
+import com.qaraniraka.myapplication.ui.StatScreen
 import com.qaraniraka.myapplication.ui.theme.GHGEmissionTheme
 import com.qaraniraka.myapplication.viewmodel.UserSessionViewModel
 import com.qaraniraka.myapplication.viewmodel.UserUiState
@@ -235,7 +236,7 @@ fun GHGEmmssionApp(
                     )
                 }
                 composable(route = Routes.StatScreen.name) {
-
+                    StatScreen()
                 }
                 composable(route = Routes.ProfileScreen.name) {
                     ProfileScreen(

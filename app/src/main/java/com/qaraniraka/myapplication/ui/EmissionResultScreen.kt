@@ -1,5 +1,6 @@
 package com.qaraniraka.myapplication.ui
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,12 +20,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.qaraniraka.myapplication.MainActivity
+import com.qaraniraka.myapplication.viewmodel.ActivityUiState
+import com.qaraniraka.myapplication.viewmodel.ActivityViewModel
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun EmissionResultScreen() {
+fun EmissionResultScreen(resultId: Int? = 0) {
+    val context = LocalContext.current
+    val activityViewModel: ActivityViewModel = viewModel()
+    if ((resultId != null) and (activityViewModel.activityUiState is ActivityUiState.Idle)) {
+        if (resultId != null) {
+            activityViewModel.getActivityResultById(resultId)
+        }
+    }
+    var emission: Double? = null
+    var message: String? = null
+    if (activityViewModel.activityUiState is ActivityUiState.ActivityResultsSuccess) {
+        if (resultId != null) {
+            emission =
+                (activityViewModel.activityUiState as ActivityUiState.ActivityResultsSuccess).data.emission
+            message =
+                (activityViewModel.activityUiState as ActivityUiState.ActivityResultsSuccess).data.message
+        }
+    }
     Surface {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -45,12 +68,15 @@ fun EmissionResultScreen() {
                         .clip(CircleShape)
                         .background(color = MaterialTheme.colorScheme.inversePrimary)
                 ) {
-                    Text(
-                        text = "100g", style = MaterialTheme.typography.displayLarge
-                    )
+                    if (emission != null) {
+                        Text(
+                            text = "${String.format("%.2f", emission)}g",
+                            style = MaterialTheme.typography.displayLarge
+                        )
+                    }
                 }
                 Text(
-                    text = "Emisi Karbon Anda Rendah", style = MaterialTheme.typography.titleLarge
+                    text = message ?: "", style = MaterialTheme.typography.titleLarge
                 )
             }
             Column(
@@ -67,7 +93,11 @@ fun EmissionResultScreen() {
                     Text(text = "Bagikan", style = MaterialTheme.typography.titleMedium)
                 }
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+                    },
                     modifier = Modifier
                         .height(56.dp)
                         .fillMaxWidth()

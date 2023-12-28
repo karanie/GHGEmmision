@@ -17,3 +17,8 @@ data class ActivityPostData(
     @SerializedName("activity_detail")
     val activityDetail: String
 )
+
+data class ActivityResults(
+    val emission: Double,
+    val message: String
+)

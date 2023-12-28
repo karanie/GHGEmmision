@@ -3,6 +3,7 @@ package com.qaraniraka.myapplication.network
 import com.qaraniraka.myapplication.model.FoobarList
 import com.qaraniraka.myapplication.model.FoobarPostData
 import com.qaraniraka.myapplication.model.ActivityPostData
+import com.qaraniraka.myapplication.model.ActivityResults
 import com.qaraniraka.myapplication.model.PostSuccess
 import com.qaraniraka.myapplication.model.UserCheckEmailData
 import com.qaraniraka.myapplication.model.UserData
@@ -49,6 +50,9 @@ interface GHGEmBackendApiService {
 
     @POST("api/activity")
     suspend fun postActivity(@Body postActivityData: ActivityPostData): PostSuccess
+
+    @GET("api/activity/result/{activityId}")
+    suspend fun getActivityResultById(@Path("activityId") activityId: Int): ActivityResults
 }
 
 object GHGEmBackendApi {

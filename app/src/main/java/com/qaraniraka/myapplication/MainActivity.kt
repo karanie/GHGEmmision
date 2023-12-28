@@ -192,15 +192,21 @@ fun GHGEmmssionApp(
                     currentRoute = currentRoute,
                     onHomeIconClicked = {
                         currentRoute = Routes.MainScreen.name
-                        navController.navigate(Routes.MainScreen.name)
+                        navController.navigate(Routes.MainScreen.name) {
+                            popUpTo(0)
+                        }
                     },
                     onStatIconClicked = {
                         currentRoute = Routes.StatScreen.name
-                        navController.navigate(Routes.StatScreen.name)
+                        navController.navigate(Routes.StatScreen.name) {
+                            popUpTo(0)
+                        }
                     },
                     onProfileIconClicked = {
                         currentRoute = Routes.ProfileScreen.name
-                        navController.navigate(Routes.ProfileScreen.name)
+                        navController.navigate(Routes.ProfileScreen.name) {
+                            popUpTo(0)
+                        }
                         if (userSession.isNotEmpty()) {
                             userViewModelForUserData.getUserDataBySession(userSession)
                         }

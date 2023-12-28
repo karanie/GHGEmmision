@@ -1,5 +1,6 @@
 package com.qaraniraka.myapplication.network
 
+import com.qaraniraka.myapplication.model.ActivityHistory
 import com.qaraniraka.myapplication.model.FoobarList
 import com.qaraniraka.myapplication.model.FoobarPostData
 import com.qaraniraka.myapplication.model.ActivityPostData
@@ -53,6 +54,9 @@ interface GHGEmBackendApiService {
 
     @GET("api/activity/result/{activityId}")
     suspend fun getActivityResultById(@Path("activityId") activityId: Int): ActivityResults
+
+    @GET("api/activity/session/{session}")
+    suspend fun getActivityBySession(@Path("session") session: String): ActivityHistory
 }
 
 object GHGEmBackendApi {

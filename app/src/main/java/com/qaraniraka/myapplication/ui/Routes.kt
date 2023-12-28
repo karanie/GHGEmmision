@@ -9,5 +9,7 @@ enum class Routes(name: String) {
     ProfileScreen(name = "ProfileScreen"),
     MakanScreen(name = "MakanScreen"),
     BerkendaraScreen(name = "BerkendaraScreen"),
-    EmissionResultScreen(name = "ResultScreen")
+    EmissionResultScreen(name = "ResultScreen"),
+    HistoryScreen(name = "HistoryScreen"),
+    HistoryDetailScreen(name = "HistoryDetailScreen"),
 }

@@ -1,6 +1,7 @@
 package com.qaraniraka.myapplication.ui
 
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -32,7 +33,9 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun RiwayatScreen() {
+fun RiwayatScreen(
+    onHistoryItemClick: (data: ActivityHistoryData) -> Unit = {}
+) {
     val userSessionViewModel: UserSessionViewModel = viewModel(
         factory = UserSessionViewModel.Factory
     )
@@ -89,7 +92,11 @@ fun RiwayatScreen() {
                                     Text("${ctime.month.name} ${ctime.dayOfMonth}")
                                     Text("${String.format("%02d", ctime.hour)}.${String.format("%02d", ctime.minute)}")
                                 }
-                            }
+                            },
+                            modifier = Modifier
+                                .clickable {
+                                    onHistoryItemClick(it)
+                                }
                         )
                     }
                 }

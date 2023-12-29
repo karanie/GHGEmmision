@@ -11,6 +11,7 @@ import com.qaraniraka.myapplication.model.UserData
 import com.qaraniraka.myapplication.model.UserLoginPostData
 import com.qaraniraka.myapplication.model.UserLogoutPostData
 import com.qaraniraka.myapplication.model.UserRegistrationPostData
+import com.qaraniraka.myapplication.model.UserVerifyPostData
 import com.qaraniraka.myapplication.model.VerifySuccess
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -45,6 +46,9 @@ interface GHGEmBackendApiService {
 
     @POST("api/user/verify")
     suspend fun loginUser(@Body userLoginPostData: UserLoginPostData): VerifySuccess
+
+    @POST("api/user/verify")
+    suspend fun verifyUser(@Body userVerifyPostData: UserVerifyPostData): VerifySuccess
 
     @POST("api/user/logout")
     suspend fun logoutUser(@Body userLogoutPostData: UserLogoutPostData)

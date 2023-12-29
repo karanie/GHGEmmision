@@ -12,6 +12,7 @@ import com.qaraniraka.myapplication.model.UserData
 import com.qaraniraka.myapplication.model.UserLoginPostData
 import com.qaraniraka.myapplication.model.UserLogoutPostData
 import com.qaraniraka.myapplication.model.UserRegistrationPostData
+import com.qaraniraka.myapplication.model.UserVerifyPostData
 import com.qaraniraka.myapplication.model.VerifySuccess
 import com.qaraniraka.myapplication.network.GHGEmBackendApi
 import kotlinx.coroutines.launch
@@ -97,6 +98,27 @@ class UserViewModel : ViewModel() {
             }
         }
     }
+
+    fun verifyUser(userVerifyPostData: UserVerifyPostData) {
+        viewModelScope.launch {
+            userUiState = UserUiState.Loading
+            userUiState = try {
+                Log.w("UserViewModel", userUiState.toString())
+                UserUiState.LoginSuccess(
+                    GHGEmBackendApi.service.verifyUser(
+                        userVerifyPostData
+                    )
+                )
+            } catch (e: IOException) {
+                UserUiState.Error
+            } catch (e: HttpException) {
+                UserUiState.Error
+            } catch (e: Throwable) {
+                UserUiState.Error
+            }
+        }
+    }
+
 
     fun getUserDataBySession(session: String) {
         viewModelScope.launch {

@@ -2,6 +2,7 @@ package com.qaraniraka.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -42,6 +43,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.qaraniraka.myapplication.model.UserLogoutPostData
+import com.qaraniraka.myapplication.model.UserVerifyPostData
 import com.qaraniraka.myapplication.ui.MainScreen
 import com.qaraniraka.myapplication.ui.ProfileScreen
 import com.qaraniraka.myapplication.ui.Routes
@@ -164,6 +166,7 @@ fun GHGEmmssionApp(
     navController: NavHostController = rememberNavController()
 ) {
     val userViewModelForLogout: UserViewModel = viewModel()
+    val userViewModelForVerify: UserViewModel = viewModel()
     val userSession = userSessionViewModel.uiState.collectAsState().value.userSession
     val userViewModelForUserData: UserViewModel = viewModel()
 
@@ -179,6 +182,25 @@ fun GHGEmmssionApp(
         in 14..18 -> "Selamat Sore, $userName"
         else -> "Selamat Malam, $userName"
     }
+
+    if ((userViewModelForVerify.userUiState is UserUiState.Idle) and userSession.isNotEmpty()) {
+        userViewModelForVerify.verifyUser(UserVerifyPostData(userSession))
+    }
+
+    if ((userViewModelForVerify.userUiState !is UserUiState.Idle)
+        and (userViewModelForVerify.userUiState !is UserUiState.LoginSuccess)
+        and (userViewModelForVerify.userUiState !is UserUiState.Loading)
+    ) {
+        Log.w("MainActivity", userViewModelForVerify.userUiState.toString())
+        userViewModelForLogout.logoutUser(
+            UserLogoutPostData(userSession)
+        )
+        userSessionViewModel.clearUserSession()
+        val intent = Intent(context, WelcomeActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+    }
+
     GHGEmissionTheme {
         Scaffold(
             topBar = {

@@ -187,10 +187,7 @@ fun GHGEmmssionApp(
         userViewModelForVerify.verifyUser(UserVerifyPostData(userSession))
     }
 
-    if ((userViewModelForVerify.userUiState !is UserUiState.Idle)
-        and (userViewModelForVerify.userUiState !is UserUiState.LoginSuccess)
-        and (userViewModelForVerify.userUiState !is UserUiState.Loading)
-    ) {
+    if (userViewModelForVerify.userUiState is UserUiState.Error) {
         Log.w("MainActivity", userViewModelForVerify.userUiState.toString())
         userViewModelForLogout.logoutUser(
             UserLogoutPostData(userSession)

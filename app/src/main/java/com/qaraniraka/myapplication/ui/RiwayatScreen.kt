@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -73,30 +74,39 @@ fun RiwayatScreen(
                 )
             }
         ) {
-            Column(Modifier.padding(it)) {
-                if (historyData != null) {
+            if (historyData != null) {
+                LazyColumn(Modifier.padding(it)) {
                     historyData.forEach {
-                        ListItem(
-                            headlineContent = {
-                                Text(it.activityType)
-                            },
-                            supportingContent = {
-                                Text("${String.format("%.2f", it.emission)}g")
-                            },
-                            trailingContent = {
-                                val ctime = LocalDateTime.parse(it.ctime, dateFormatter)
-                                Column(
-                                    horizontalAlignment = Alignment.End
-                                ) {
-                                    Text("${ctime.month.name} ${ctime.dayOfMonth}")
-                                    Text("${String.format("%02d", ctime.hour)}.${String.format("%02d", ctime.minute)}")
-                                }
-                            },
-                            modifier = Modifier
-                                .clickable {
-                                    onHistoryItemClick(it)
-                                }
-                        )
+                        item {
+                            ListItem(
+                                headlineContent = {
+                                    Text(it.activityType)
+                                },
+                                supportingContent = {
+                                    Text("${String.format("%.2f", it.emission)}g")
+                                },
+                                trailingContent = {
+                                    val ctime = LocalDateTime.parse(it.ctime, dateFormatter)
+                                    Column(
+                                        horizontalAlignment = Alignment.End
+                                    ) {
+                                        Text("${ctime.month.name} ${ctime.dayOfMonth}")
+                                        Text(
+                                            "${
+                                                String.format(
+                                                    "%02d",
+                                                    ctime.hour
+                                                )
+                                            }.${String.format("%02d", ctime.minute)}"
+                                        )
+                                    }
+                                },
+                                modifier = Modifier
+                                    .clickable {
+                                        onHistoryItemClick(it)
+                                    }
+                            )
+                        }
                     }
                 }
             }

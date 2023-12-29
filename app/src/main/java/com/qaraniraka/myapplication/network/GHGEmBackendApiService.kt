@@ -5,6 +5,7 @@ import com.qaraniraka.myapplication.model.FoobarList
 import com.qaraniraka.myapplication.model.FoobarPostData
 import com.qaraniraka.myapplication.model.ActivityPostData
 import com.qaraniraka.myapplication.model.ActivityResults
+import com.qaraniraka.myapplication.model.EmissionList
 import com.qaraniraka.myapplication.model.PostSuccess
 import com.qaraniraka.myapplication.model.UserCheckEmailData
 import com.qaraniraka.myapplication.model.UserData
@@ -19,6 +20,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 private const val BASE_URL =
     "http://10.0.2.2:3000"
@@ -61,6 +63,12 @@ interface GHGEmBackendApiService {
 
     @GET("api/activity/session/{session}")
     suspend fun getActivityBySession(@Path("session") session: String): ActivityHistory
+
+    @GET("api/activity/stats")
+    suspend fun getEmission(
+        @Query("session") session: String,
+        @Query("interval") interval: String
+    ): EmissionList
 }
 
 object GHGEmBackendApi {

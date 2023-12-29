@@ -48,3 +48,7 @@ data class ActivityHistory(
     val data: List<ActivityHistoryData>,
     val totalRecordsCount: Int
 )
+
+data class EmissionList(
+    val data: Array<Double>,
+)

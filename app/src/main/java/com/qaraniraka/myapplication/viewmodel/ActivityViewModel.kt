@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.qaraniraka.myapplication.model.ActivityHistory
 import com.qaraniraka.myapplication.model.ActivityPostData
 import com.qaraniraka.myapplication.model.ActivityResults
+import com.qaraniraka.myapplication.model.EmissionList
 import com.qaraniraka.myapplication.model.PostSuccess
 import com.qaraniraka.myapplication.network.GHGEmBackendApi
 import kotlinx.coroutines.launch
@@ -22,7 +23,11 @@ class ActivityViewModel : ViewModel() {
         viewModelScope.launch {
             activityUiState = ActivityUiState.Loading
             activityUiState = try {
-                ActivityUiState.PostActivitySuccess(GHGEmBackendApi.service.postActivity(activityPostData))
+                ActivityUiState.PostActivitySuccess(
+                    GHGEmBackendApi.service.postActivity(
+                        activityPostData
+                    )
+                )
             } catch (e: IOException) {
                 ActivityUiState.Error
             } catch (e: HttpException) {
@@ -70,12 +75,30 @@ class ActivityViewModel : ViewModel() {
             }
         }
     }
+
+    fun getEmission(session: String, interval: String) {
+        viewModelScope.launch {
+            activityUiState = ActivityUiState.Loading
+            activityUiState = try {
+                ActivityUiState.EmissionSuccess(
+                    GHGEmBackendApi.service.getEmission(session, interval)
+                )
+            } catch (e: IOException) {
+                ActivityUiState.Error
+            } catch (e: HttpException) {
+                ActivityUiState.Error
+            } catch (e: Throwable) {
+                ActivityUiState.Error
+            }
+        }
+    }
 }
 
 sealed interface ActivityUiState {
     data class PostActivitySuccess(val data: PostSuccess) : ActivityUiState
     data class ActivityResultsSuccess(val data: ActivityResults) : ActivityUiState
     data class ActivityHistorySuccess(val data: ActivityHistory) : ActivityUiState
+    data class EmissionSuccess(val data: EmissionList) : ActivityUiState
     object Error : ActivityUiState
     object Loading : ActivityUiState
     object Idle : ActivityUiState

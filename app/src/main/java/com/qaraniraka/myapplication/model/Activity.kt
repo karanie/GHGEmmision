@@ -14,6 +14,13 @@ data class ActivityBerkendaraDetail(
     val travelDistance: Double
 )
 
+data class ActivityMakanDetail(
+    @SerializedName("food_product")
+    val foodProduct: String,
+    @SerializedName("food_weight")
+    val foodWeight: Double
+)
+
 data class ActivityPostData(
     val session: String,
     @SerializedName("activity_type")

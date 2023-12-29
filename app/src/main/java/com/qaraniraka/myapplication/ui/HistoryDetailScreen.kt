@@ -25,6 +25,7 @@ import com.google.gson.Gson
 import com.qaraniraka.myapplication.MainActivity
 import com.qaraniraka.myapplication.model.ActivityBerkendaraDetail
 import com.qaraniraka.myapplication.model.ActivityHistoryData
+import com.qaraniraka.myapplication.model.ActivityMakanDetail
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -59,6 +60,26 @@ fun BerkendaraDetail(
     )
     Text(
         text = "Jarak Berkendara: ${String.format("%.2f", travelDistance)}",
+        style = MaterialTheme.typography.bodyMedium
+    )
+}
+
+@Composable
+fun MakanDetail(
+    foodProduct: String,
+    foodWeight: Double
+) {
+    Text(
+        text = "Makan",
+        style = MaterialTheme.typography.titleLarge,
+        modifier = Modifier.padding(bottom = 16.dp)
+    )
+    Text(
+        text = "Bahan Dasar: $foodProduct",
+        style = MaterialTheme.typography.bodyMedium
+    )
+    Text(
+        text = "Berat Makanan: ${String.format("%.2f", foodWeight)}",
         style = MaterialTheme.typography.bodyMedium
     )
 }
@@ -102,6 +123,15 @@ fun HistoryDetailScreen(historyData: ActivityHistoryData? = null) {
                                     fuelConsumption = detailData.fuelConsumption,
                                     fuelType = detailData.fuelType,
                                     travelDistance = detailData.travelDistance
+                                )
+                            } else if (historyData.activityType == "makan") {
+                                val detailData = gson.fromJson(
+                                    historyData.activityDetail,
+                                    ActivityMakanDetail::class.java
+                                )
+                                MakanDetail(
+                                    foodProduct = detailData.foodProduct,
+                                    foodWeight = detailData.foodWeight
                                 )
                             }
 

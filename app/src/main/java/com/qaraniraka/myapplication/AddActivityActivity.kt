@@ -50,7 +50,14 @@ fun AddActivityActivityApp(
                 )
             }
             composable(route = Routes.MakanScreen.name) {
-                MakanScreen()
+                MakanScreen(
+                    onRecordSaved = {
+                        recordId = it
+                        navController.navigate(Routes.EmissionResultScreen.name) {
+                            popUpTo(0)
+                        }
+                    }
+                )
             }
             composable(route = Routes.EmissionResultScreen.name) {
                 EmissionResultScreen(recordId)

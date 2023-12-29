@@ -259,6 +259,10 @@ fun GHGEmmssionApp(
                         onRiwayatAktivitasClick = {
                             val intent = Intent(context, HistoryActivity::class.java)
                             context.startActivity(intent)
+                        },
+                        onStatistikAktivitasClick = {
+                            val intent = Intent(context, StatisticActivity::class.java)
+                            context.startActivity(intent)
                         }
                     )
                 }

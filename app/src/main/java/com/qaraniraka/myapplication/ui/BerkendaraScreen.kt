@@ -1,5 +1,6 @@
 package com.qaraniraka.myapplication.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +42,7 @@ import com.qaraniraka.myapplication.viewmodel.UserSessionViewModel
 fun BerkendaraScreen(
     onRecordSaved: (insertId: Int) -> Unit = {}
 ) {
+    val context = LocalContext.current
     val userSessionViewModel: UserSessionViewModel = viewModel(
         factory = UserSessionViewModel.Factory
     )
@@ -47,9 +50,9 @@ fun BerkendaraScreen(
     val activityViewModel: ActivityViewModel = viewModel()
     val gson = Gson()
 
-    var ukuranEngine by remember { mutableStateOf<Double?>(null) }
-    var jumlahCylinders by remember { mutableStateOf<Int?>(null) }
-    var fuelConsumption by remember { mutableStateOf<Double?>(null) }
+    var ukuranEngine by remember { mutableStateOf("") }
+    var jumlahCylinders by remember { mutableStateOf("") }
+    var fuelConsumption by remember { mutableStateOf("") }
     var jenisBensinExpanded by remember { mutableStateOf(false) }
     var jenisBensinSelected by remember { mutableStateOf("") }
     val jenisBensin = arrayOf(
@@ -59,7 +62,7 @@ fun BerkendaraScreen(
         "Ethanol",
         "Natural"
     )
-    var jarakBerkendara by remember { mutableStateOf<Double?>(null) }
+    var jarakBerkendara by remember { mutableStateOf("") }
 
     if (activityViewModel.activityUiState is ActivityUiState.PostActivitySuccess) {
         val insertId = (activityViewModel.activityUiState as ActivityUiState.PostActivitySuccess).data.insertId
@@ -85,8 +88,8 @@ fun BerkendaraScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 OutlinedTextField(
-                    value = ukuranEngine?.toString() ?: "",
-                    onValueChange = { ukuranEngine = it.toDouble() },
+                    value = ukuranEngine,
+                    onValueChange = { ukuranEngine = it },
                     label = {
                         Text("Ukuran Engine")
                     },
@@ -94,8 +97,8 @@ fun BerkendaraScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = jumlahCylinders?.toString() ?: "",
-                    onValueChange = { jumlahCylinders = it.toInt() },
+                    value = jumlahCylinders,
+                    onValueChange = { jumlahCylinders = it },
                     label = {
                         Text("Jumlah Cylinders")
                     },
@@ -103,8 +106,8 @@ fun BerkendaraScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = fuelConsumption?.toString() ?: "",
-                    onValueChange = { fuelConsumption = it.toDouble() },
+                    value = fuelConsumption,
+                    onValueChange = { fuelConsumption = it },
                     label = {
                         Text("Fuel Consumption per 100 km")
                     },
@@ -140,8 +143,8 @@ fun BerkendaraScreen(
                 }
 
                 OutlinedTextField(
-                    value = jarakBerkendara?.toString() ?: "",
-                    onValueChange = { jarakBerkendara = it.toDouble() },
+                    value = jarakBerkendara,
+                    onValueChange = { jarakBerkendara = it },
                     label = {
                         Text("Jarak Berkendara")
                     },
@@ -151,22 +154,27 @@ fun BerkendaraScreen(
             }
             Button(
                 onClick = {
-                    if (userSession.isNotEmpty()) {
-                        activityViewModel.postActivity(
-                            ActivityPostData(
-                                userSession,
-                                "berkendara",
-                                gson.toJson(
-                                    ActivityBerkendaraDetail(
-                                        ukuranEngine ?: 0.0,
-                                        jumlahCylinders ?: 0,
-                                        fuelConsumption ?: 0.0,
-                                        jenisBensinSelected,
-                                        jarakBerkendara ?: 0.0
+                    try {
+                        if (userSession.isNotEmpty()) {
+                            activityViewModel.postActivity(
+                                ActivityPostData(
+                                    userSession,
+                                    "berkendara",
+                                    gson.toJson(
+                                        ActivityBerkendaraDetail(
+                                            ukuranEngine.toDouble(),
+                                            jumlahCylinders.toInt(),
+                                            fuelConsumption.toDouble(),
+                                            jenisBensinSelected,
+                                            jarakBerkendara.toDouble()
+                                        )
                                     )
                                 )
                             )
-                        )
+                        }
+                    } catch (e: NumberFormatException) {
+                        // TODO: This doesn't show up for some reason
+                        Toast.makeText(context, "Inputan angka tidak benar", Toast.LENGTH_SHORT)
                     }
                 },
                 modifier = Modifier

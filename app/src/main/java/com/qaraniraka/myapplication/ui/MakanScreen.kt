@@ -1,5 +1,7 @@
 package com.qaraniraka.myapplication.ui
 
+import android.icu.text.DecimalFormatSymbols
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,9 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.gson.Gson
 import com.qaraniraka.myapplication.model.ActivityMakanDetail
@@ -40,6 +44,7 @@ import com.qaraniraka.myapplication.viewmodel.UserSessionViewModel
 fun MakanScreen(
     onRecordSaved: (insertId: Int) -> Unit = {}
 ) {
+    val context = LocalContext.current
     val activityViewModel: ActivityViewModel = viewModel()
     val userSessionViewModel: UserSessionViewModel = viewModel(
         factory = UserSessionViewModel.Factory
@@ -47,7 +52,7 @@ fun MakanScreen(
     val userSession = userSessionViewModel.uiState.collectAsState().value.userSession
     val gson = Gson()
 
-    var beratMakanan by remember { mutableStateOf<Double?>(null) }
+    var beratMakanan by remember { mutableStateOf("") }
     var bahanDasarExpanded by remember { mutableStateOf(false) }
     var bahanDasarSelected by remember { mutableStateOf("") }
     val bahanDasar = arrayOf(
@@ -97,7 +102,8 @@ fun MakanScreen(
     )
 
     if (activityViewModel.activityUiState is ActivityUiState.PostActivitySuccess) {
-        val insertId = (activityViewModel.activityUiState as ActivityUiState.PostActivitySuccess).data.insertId
+        val insertId =
+            (activityViewModel.activityUiState as ActivityUiState.PostActivitySuccess).data.insertId
         onRecordSaved(insertId)
     }
 
@@ -146,31 +152,36 @@ fun MakanScreen(
                 }
 
                 OutlinedTextField(
-                    value = beratMakanan?.toString() ?: "",
+                    value = beratMakanan,
                     label = {
                         Text("Berat Makanan (gram)")
                     },
-                    onValueChange = { beratMakanan = it.toDouble() },
+                    onValueChange = { beratMakanan = it },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
             Button(
                 onClick = {
-                    if (userSession.isNotEmpty()) {
-                        activityViewModel.postActivity(
-                            ActivityPostData(
-                                userSession,
-                                "makan",
-                                gson.toJson(
-                                    ActivityMakanDetail(
-                                        bahanDasarSelected,
-                                        (beratMakanan ?: 0.0)/1000.0
+                    try {
+                        if (userSession.isNotEmpty()) {
+                            activityViewModel.postActivity(
+                                ActivityPostData(
+                                    userSession,
+                                    "makan",
+                                    gson.toJson(
+                                        ActivityMakanDetail(
+                                            bahanDasarSelected,
+                                            (beratMakanan.toDouble()) / 1000.0
+                                        )
                                     )
                                 )
-                            )
 
-                        )
+                            )
+                        }
+                    } catch (e: NumberFormatException) {
+                        // TODO: This doesn't show up for some reason
+                        Toast.makeText(context, "Inputan angka tidak benar", Toast.LENGTH_SHORT)
                     }
                 },
                 modifier = Modifier

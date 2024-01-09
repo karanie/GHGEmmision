@@ -23,7 +23,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 private const val BASE_URL =
-    "http://10.0.2.2:3000"
+    "http://128.199.226.237:81"
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())

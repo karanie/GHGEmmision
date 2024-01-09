@@ -94,10 +94,10 @@ fun HistoryDetailScreen(historyData: ActivityHistoryData? = null) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         Column(
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.padding(16.dp)
         ) {
             if (historyData != null) {
                 Card(
